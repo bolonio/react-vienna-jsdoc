@@ -14,6 +14,8 @@
 
 ## Utils
   
+<a href="#getAllElements">getAllElements(name) ⇒ <code>string</code></a>
+
 <a href="#getElements">getElements(name,n-) ⇒ <code>string[]</code></a>
 ____
 
@@ -62,6 +64,25 @@ ____
 # Utils
 
 
+<a name="getAllElements"></a>
+
+## getAllElements(name) ⇒ <code>string</code>
+<p>This is a utility function that returns the name of the elements to be generated.</p>
+
+
+### Parameters
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | <p>The name of the elements to be generated.</p> |
+  
+
+### Returns
+|  Type | Description |
+|  --- | --- |
+|  <code>string</code> | <p>The name of the elements to be generated.</p> |
+  
+[See getAllElements code](/src/utils/getAllElements/index.ts#L1)
+
 <a name="getElements"></a>
 
 ## getElements(name,n-) ⇒ <code>string[]</code>
@@ -80,5 +101,5 @@ ____
 |  --- | --- |
 |  <code>string[]</code> | <p>An array of elements with the specified name and number.</p> |
   
-[See getElements code](/src/utils/folder1/index.ts#L1)
+[See getElements code](/src/utils/getElements/index.ts#L1)
 ____
