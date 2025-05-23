@@ -1,0 +1,94 @@
+# @format
+
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Semver version (major / minor / patch)'
+
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate GitHub App Token
+        id: generate_token
+        env:
+          GITHUB_APP_ID: ${{ secrets.GH_APPS_APP_ID }}
+          GITHUB_INST_ID: ${{ secrets.GH_APPS_INSTALLATION_ID }}
+          GITHUB_KEY_VALUE: ${{ secrets.GH_APPS_PRIVATE_KEY }}
+        run: |
+          GO_GITHUB_VERSION="1.0.1"
+          wget -O ghapps https://github.com/kununu/go-github/releases/download/v${GO_GITHUB_VERSION}/go-github_${GO_GITHUB_VERSION}_linux_amd64 && chmod +x ghapps
+
+          echo "GH_APPS_TOKEN=$(./ghapps)" >> $GITHUB_ENV
+
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_APPS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+
+      - name: Setup git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Packages
+        run: npm ci
+
+      - name: Install jsdoc libraries
+        run: npm install -g jsdoc jsdoc-to-markdown
+
+      - name: Generate documentation json file
+        run: |
+          npm run docs:json
+
+      - name: Generate documentation README file
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { default: generateDocs } = await import('${{ github.workspace }}/docs/docs.js')
+            await generateDocs()
+
+      - name: Commit documentation changes
+        run: |
+          git add .
+          if ! git diff --cached --quiet; then
+          git commit -m "Generate JSDoc documentation"
+          else
+          echo "No changes to commit"
+          fi
+
+      - name: Bump Package Version
+        run: |
+          npm version ${{ github.event.inputs.version }}
+
+      - name: Publish
+        run: |
+          echo "Publishing to npm..."
+
+      - name: Create Github Release
+        run: |
+          gh release create $(sed -nr 's/^\s*\"version": "([0-9]{1,}\.[0-9]{1,}.*)",$/\1/p' package.json) --generate-notes
+
+      - name: Push Version Changes
+        run: git push origin ${GITHUB_REF##*/} --follow-tags
