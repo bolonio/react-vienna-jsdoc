@@ -16,7 +16,7 @@
   
 <a href="#getAllElements">getAllElements(name) ⇒ <code>string</code></a>
 
-<a href="#getElements">getElements(name,n-) ⇒ <code>string[]</code></a>
+<a href="#getElements">getElements(name,n) ⇒ <code>string[]</code></a>
 ____
 
 
@@ -85,7 +85,7 @@ ____
 
 <a name="getElements"></a>
 
-## getElements(name,n-) ⇒ <code>string[]</code>
+## getElements(name,n) ⇒ <code>string[]</code>
 <p>This is a utility function that generates an array of elements with a specified name and number.</p>
 
 
@@ -93,7 +93,7 @@ ____
 | Name | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | <p>The name of the elements to be generated.</p> |
-| n- | <code>number</code> | <p>The number of elements to be generated.</p> |
+| n | <code>number</code> | <p>The number of elements to be generated.</p> |
   
 
 ### Returns
