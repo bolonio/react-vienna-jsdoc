@@ -1,6 +1,6 @@
 <!-- @format -->
 
-# react-vienna-jsdoc
+# Automating JSDoc documentation generation with Github actions
 
 This is a repo that illustrates my talk "Automating JSDoc documentation generation with Github actions" at the React Vienna meetup.
 
