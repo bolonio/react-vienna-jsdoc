@@ -23,23 +23,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Generate GitHub App Token
-        id: generate_token
-        env:
-          GITHUB_APP_ID: ${{ secrets.GH_APPS_APP_ID }}
-          GITHUB_INST_ID: ${{ secrets.GH_APPS_INSTALLATION_ID }}
-          GITHUB_KEY_VALUE: ${{ secrets.GH_APPS_PRIVATE_KEY }}
-        run: |
-          GO_GITHUB_VERSION="1.0.1"
-          wget -O ghapps https://github.com/kununu/go-github/releases/download/v${GO_GITHUB_VERSION}/go-github_${GO_GITHUB_VERSION}_linux_amd64 && chmod +x ghapps
-
-          echo "GH_APPS_TOKEN=$(./ghapps)" >> $GITHUB_ENV
-
       - name: Checkout Source
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ env.GH_APPS_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
