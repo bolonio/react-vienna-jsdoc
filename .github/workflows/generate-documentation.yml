@@ -1,0 +1,57 @@
+# @format
+
+name: Generate Documentation
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+
+      - name: Setup git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Packages
+        run: npm ci
+
+      - name: Install jsdoc libraries
+        run: npm install -g jsdoc jsdoc-to-markdown
+
+      - name: Generate documentation json file
+        run: |
+          npm run docs:json
+
+      - name: Generate documentation README file
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { default: generateDocs } = await import('${{ github.workspace }}/docs/docs.js')
+            await generateDocs()
+
+      - name: Commit documentation changes
+        run: |
+          git add .
+          if ! git diff --cached --quiet; then
+          git commit -m "Generate JSDoc documentation"
+          git push
+          else
+          echo "No changes to commit"
+          fi
