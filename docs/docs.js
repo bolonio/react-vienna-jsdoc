@@ -19,7 +19,7 @@ const generateIndex = (docs, folder) => {
 
 const getDocsFolderItems = folder => {
   return docs.filter(doc => {
-    return doc.meta.path.includes(`kununu-common/src/${folder}`);
+    return doc.meta.path.includes(`src/${folder}`);
   });
 };
 
