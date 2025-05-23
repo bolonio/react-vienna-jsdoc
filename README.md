@@ -12,4 +12,4 @@ If you have any suggestion for how this project could be improved, please read t
 
 ## Author & Contributors
 
-a11y-github-actions is created by [Adrián Bolonio](https://www.adrianbolonio.com)
+react-vienna-jsdoc is created by [Adrián Bolonio](https://www.adrianbolonio.com)
