@@ -1,7 +1,6 @@
 /**
  * This is a test hook that returns an object with a test1 property.
  *
- * @format
  * @returns {{test1: string}}
  */
 
